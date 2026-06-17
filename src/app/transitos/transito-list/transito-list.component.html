@@ -1,0 +1,83 @@
+<div class="page-header">
+  <div>
+    <h2>Tránsitos</h2>
+    <p class="page-header__sub">Gestión de tránsitos temporales de animales</p>
+  </div>
+  <a routerLink="/transitos/nuevo" class="btn btn--primary">+ Nuevo tránsito</a>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card filtros">
+  <div class="filtros__grid">
+    <div class="form-group">
+      <label for="filtroEstado">Estado</label>
+      <select id="filtroEstado" [(ngModel)]="filtroEstado" (change)="aplicarFiltros()">
+        <option value="">Todos</option>
+        <option *ngFor="let e of estados" [value]="e">{{ estadoLabels[e] }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="filtroAnimal">Animal</label>
+      <select id="filtroAnimal" [(ngModel)]="filtroAnimalId" (change)="aplicarFiltros()">
+        <option [ngValue]="null">Todos</option>
+        <option *ngFor="let a of animales" [ngValue]="a.id">{{ a.nombre }}</option>
+      </select>
+    </div>
+    <div class="filtros__actions">
+      <button type="button" class="btn btn--secondary btn--sm" (click)="aplicarFiltros()">Filtrar</button>
+      <button type="button" class="btn btn--secondary btn--sm" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <p *ngIf="cargando" class="loading">Cargando tránsitos...</p>
+
+  <div *ngIf="!cargando && transitos.length === 0" class="empty">
+    No hay tránsitos registrados. <a routerLink="/transitos/nuevo">Registrar el primero</a>
+  </div>
+
+  <div *ngIf="!cargando && transitos.length > 0" class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Animal</th>
+          <th>Hogar</th>
+          <th>Refugio</th>
+          <th>Inicio</th>
+          <th>Fin estimada</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of transitos">
+          <td>{{ t.id }}</td>
+          <td><strong>{{ t.animalNombre }}</strong></td>
+          <td>{{ t.hogarTransitoNombre }}</td>
+          <td>{{ t.refugioNombre }}</td>
+          <td>{{ t.fechaInicio }}</td>
+          <td>{{ t.fechaFinEstimada || '—' }}</td>
+          <td>
+            <span class="badge">{{ etiquetaEstado(t.estadoActual) }}</span>
+          </td>
+          <td>
+            <div class="actions">
+              <a [routerLink]="['/transitos/editar', t.id]" class="btn btn--secondary btn--sm">Editar</a>
+              <button
+                type="button"
+                class="btn btn--danger btn--sm"
+                [disabled]="eliminandoId === t.id"
+                (click)="confirmarEliminar(t)"
+              >
+                {{ eliminandoId === t.id ? '...' : 'Eliminar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

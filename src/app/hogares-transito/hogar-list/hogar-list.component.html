@@ -1,0 +1,60 @@
+<div class="page-header">
+  <div>
+    <h2>Hogares de tránsito</h2>
+    <p class="page-header__sub">ABM de hogares temporales para animales</p>
+  </div>
+  <a routerLink="/hogares-transito/nuevo" class="btn btn--primary">+ Nuevo hogar</a>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card">
+  <p *ngIf="cargando" class="loading">Cargando hogares...</p>
+
+  <div *ngIf="!cargando && hogares.length === 0" class="empty">
+    No hay hogares registrados. <a routerLink="/hogares-transito/nuevo">Registrar el primero</a>
+  </div>
+
+  <div *ngIf="!cargando && hogares.length > 0" class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>DNI</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>Capacidad</th>
+          <th>Gatos</th>
+          <th>Perros</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let h of hogares">
+          <td>{{ h.dni }}</td>
+          <td><strong>{{ h.nombre }}</strong></td>
+          <td>{{ h.apellido }}</td>
+          <td>{{ h.telefono || '—' }}</td>
+          <td>{{ h.email || '—' }}</td>
+          <td>{{ h.capacidadMaxima }}</td>
+          <td>{{ h.tieneGatos ? 'Sí' : 'No' }}</td>
+          <td>{{ h.tienePerros ? 'Sí' : 'No' }}</td>
+          <td>
+            <div class="actions">
+              <a [routerLink]="['/hogares-transito/editar', h.id]" class="btn btn--secondary btn--sm">Editar</a>
+              <button
+                type="button"
+                class="btn btn--danger btn--sm"
+                [disabled]="eliminandoId === h.id"
+                (click)="confirmarEliminar(h)"
+              >
+                {{ eliminandoId === h.id ? '...' : 'Eliminar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

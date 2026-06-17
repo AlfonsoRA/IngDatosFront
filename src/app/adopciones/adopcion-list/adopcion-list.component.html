@@ -1,0 +1,72 @@
+<div class="page-header">
+  <div>
+    <h2>Adopciones</h2>
+    <p class="page-header__sub">Gestión de solicitudes y procesos de adopción</p>
+  </div>
+  <a routerLink="/adopciones/nuevo" class="btn btn--primary">+ Nueva adopción</a>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card filtros">
+  <div class="filtros__grid">
+    <div class="form-group">
+      <label for="filtroEstado">Estado</label>
+      <select id="filtroEstado" [(ngModel)]="filtroEstado" (change)="aplicarFiltros()">
+        <option value="">Todos</option>
+        <option *ngFor="let e of estados" [value]="e">{{ estadoLabels[e] }}</option>
+      </select>
+    </div>
+    <div class="filtros__actions">
+      <button type="button" class="btn btn--secondary btn--sm" (click)="aplicarFiltros()">Filtrar</button>
+      <button type="button" class="btn btn--secondary btn--sm" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <p *ngIf="cargando" class="loading">Cargando adopciones...</p>
+
+  <div *ngIf="!cargando && adopciones.length === 0" class="empty">
+    No hay adopciones registradas. <a routerLink="/adopciones/nuevo">Registrar la primera</a>
+  </div>
+
+  <div *ngIf="!cargando && adopciones.length > 0" class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Animal</th>
+          <th>Adoptante</th>
+          <th>Fecha solicitud</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of adopciones">
+          <td>{{ a.id }}</td>
+          <td><strong>{{ a.animalNombre }}</strong></td>
+          <td>{{ a.adoptanteNombre }}</td>
+          <td>{{ a.fechaSolicitud }}</td>
+          <td>
+            <span class="badge">{{ etiquetaEstado(a.estadoActual) }}</span>
+          </td>
+          <td>
+            <div class="actions">
+              <a [routerLink]="['/adopciones/editar', a.id]" class="btn btn--secondary btn--sm">Editar</a>
+              <button
+                type="button"
+                class="btn btn--danger btn--sm"
+                [disabled]="eliminandoId === a.id"
+                (click)="confirmarEliminar(a)"
+              >
+                {{ eliminandoId === a.id ? '...' : 'Eliminar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

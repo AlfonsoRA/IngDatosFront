@@ -1,0 +1,35 @@
+<div class="page-header">
+  <div>
+    <h2>Reportes</h2>
+    <p class="page-header__sub">Tablero de indicadores operativos</p>
+  </div>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<ng-container *ngFor="let tabla of [animalesDisponibles, refugiosOcupacion, adopcionesDetalle]">
+  <div class="card">
+    <h3>{{ tabla.titulo }}</h3>
+
+    <p *ngIf="tabla.cargando" class="loading">Cargando {{ tabla.titulo | lowercase }}...</p>
+
+    <div *ngIf="!tabla.cargando && tabla.filas.length === 0" class="empty">
+      Sin datos para este reporte.
+    </div>
+
+    <div *ngIf="!tabla.cargando && tabla.filas.length > 0" class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th *ngFor="let col of tabla.columnas">{{ etiquetaColumna(col) }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fila of tabla.filas">
+            <td *ngFor="let col of tabla.columnas">{{ valorCelda(fila, col) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-container>

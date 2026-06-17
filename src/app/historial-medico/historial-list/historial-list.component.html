@@ -1,0 +1,76 @@
+<div class="page-header">
+  <div>
+    <h2>Historial médico</h2>
+    <p class="page-header__sub">Registros de atención veterinaria y vacunas</p>
+  </div>
+  <a routerLink="/historial-medico/nuevo" class="btn btn--primary">+ Nuevo registro</a>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card filtros">
+  <div class="filtros__grid">
+    <div class="form-group">
+      <label for="filtroAnimal">Animal</label>
+      <select id="filtroAnimal" [(ngModel)]="filtroAnimalId" (change)="aplicarFiltros()">
+        <option [ngValue]="null">Todos</option>
+        <option *ngFor="let a of animales" [ngValue]="a.id">{{ a.nombre }}</option>
+      </select>
+    </div>
+    <div class="filtros__actions">
+      <button type="button" class="btn btn--secondary btn--sm" (click)="aplicarFiltros()">Filtrar</button>
+      <button type="button" class="btn btn--secondary btn--sm" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <p *ngIf="cargando" class="loading">Cargando historial...</p>
+
+  <div *ngIf="!cargando && registros.length === 0" class="empty">
+    No hay registros médicos. <a routerLink="/historial-medico/nuevo">Registrar el primero</a>
+  </div>
+
+  <div *ngIf="!cargando && registros.length > 0" class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Animal</th>
+          <th>Fecha</th>
+          <th>Veterinaria</th>
+          <th>Diagnóstico</th>
+          <th>Antirrábica</th>
+          <th>Sextuple</th>
+          <th>Triple</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of registros">
+          <td>{{ r.id }}</td>
+          <td><strong>{{ r.animalNombre }}</strong></td>
+          <td>{{ r.fecha }}</td>
+          <td>{{ r.nombreVeterinaria || '—' }}</td>
+          <td>{{ r.diagnostico || '—' }}</td>
+          <td>{{ r.antirrabicaAnual ? 'Sí' : 'No' }}</td>
+          <td>{{ r.sextupleAnual ? 'Sí' : 'No' }}</td>
+          <td>{{ r.tripleAnual ? 'Sí' : 'No' }}</td>
+          <td>
+            <div class="actions">
+              <a [routerLink]="['/historial-medico/editar', r.id]" class="btn btn--secondary btn--sm">Editar</a>
+              <button
+                type="button"
+                class="btn btn--danger btn--sm"
+                [disabled]="eliminandoId === r.id"
+                (click)="confirmarEliminar(r)"
+              >
+                {{ eliminandoId === r.id ? '...' : 'Eliminar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

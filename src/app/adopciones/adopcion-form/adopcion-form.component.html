@@ -1,0 +1,54 @@
+<div class="page-header">
+  <div>
+    <h2>{{ editando ? 'Editar adopción' : 'Nueva adopción' }}</h2>
+    <p class="page-header__sub">
+      {{ editando ? 'Modifique los datos de la adopción' : 'Registrar una nueva solicitud de adopción' }}
+    </p>
+  </div>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card form-card">
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="animalId">Animal *</label>
+        <select id="animalId" formControlName="animalId" [class.invalid]="campoInvalido('animalId')">
+          <option [ngValue]="null">Seleccione...</option>
+          <option *ngFor="let a of animales" [ngValue]="a.id">{{ a.nombre }} ({{ a.especie }})</option>
+        </select>
+        <span *ngIf="campoInvalido('animalId')" class="error">Seleccione un animal.</span>
+      </div>
+      <div class="form-group">
+        <label for="adoptanteId">Adoptante *</label>
+        <select id="adoptanteId" formControlName="adoptanteId" [class.invalid]="campoInvalido('adoptanteId')">
+          <option [ngValue]="null">Seleccione...</option>
+          <option *ngFor="let ad of adoptantes" [ngValue]="ad.id">{{ nombreAdoptante(ad) }}</option>
+        </select>
+        <span *ngIf="campoInvalido('adoptanteId')" class="error">Seleccione un adoptante.</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fechaSolicitud">Fecha de solicitud *</label>
+        <input id="fechaSolicitud" type="date" formControlName="fechaSolicitud" [class.invalid]="campoInvalido('fechaSolicitud')" />
+        <span *ngIf="campoInvalido('fechaSolicitud')" class="error">La fecha es obligatoria.</span>
+      </div>
+      <div class="form-group">
+        <label for="estadoActual">Estado *</label>
+        <select id="estadoActual" formControlName="estadoActual" [class.invalid]="campoInvalido('estadoActual')">
+          <option *ngFor="let e of estados" [value]="e">{{ estadoLabels[e] }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn--secondary" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn--primary" [disabled]="guardando">
+        {{ guardando ? 'Guardando...' : (editando ? 'Actualizar' : 'Crear adopción') }}
+      </button>
+    </div>
+  </form>
+</div>

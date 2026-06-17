@@ -1,0 +1,73 @@
+<div class="page-header">
+  <div>
+    <h2>{{ editando ? 'Editar animal' : 'Nuevo animal' }}</h2>
+    <p class="page-header__sub">
+      {{ editando ? 'Modifique la ficha del animal' : 'Alta de un nuevo animal en la red' }}
+    </p>
+  </div>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card form-card">
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <div class="form-group">
+      <label for="nombre">Nombre *</label>
+      <input id="nombre" type="text" formControlName="nombre" [class.invalid]="campoInvalido('nombre')" />
+      <span *ngIf="campoInvalido('nombre')" class="error">El nombre es obligatorio (máx. 120 caracteres).</span>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="especie">Especie *</label>
+        <input id="especie" type="text" formControlName="especie" placeholder="Perro, Gato..." [class.invalid]="campoInvalido('especie')" />
+        <span *ngIf="campoInvalido('especie')" class="error">La especie es obligatoria.</span>
+      </div>
+      <div class="form-group">
+        <label for="raza">Raza</label>
+        <input id="raza" type="text" formControlName="raza" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="edad">Edad (años)</label>
+        <input id="edad" type="number" min="0" formControlName="edad" [class.invalid]="campoInvalido('edad')" />
+        <span *ngIf="campoInvalido('edad')" class="error">La edad no puede ser negativa.</span>
+      </div>
+      <div class="form-group form-group--checkbox">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="esCastrado" />
+          Castrado/a
+        </label>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fechaIngreso">Fecha de ingreso *</label>
+        <input id="fechaIngreso" type="date" formControlName="fechaIngreso" [class.invalid]="campoInvalido('fechaIngreso')" />
+        <span *ngIf="campoInvalido('fechaIngreso')" class="error">La fecha de ingreso es obligatoria.</span>
+      </div>
+      <div class="form-group">
+        <label for="refugioId">Refugio *</label>
+        <select id="refugioId" formControlName="refugioId" [class.invalid]="campoInvalido('refugioId')">
+          <option [ngValue]="null" disabled>Seleccione refugio...</option>
+          <option *ngFor="let r of refugios" [ngValue]="r.id">{{ r.nombre }}</option>
+        </select>
+        <span *ngIf="campoInvalido('refugioId')" class="error">Seleccione un refugio.</span>
+      </div>
+    </div>
+
+    <p class="form-hint" *ngIf="editando">
+      La disponibilidad para adopción se calcula según el proceso de adopción registrado en el sistema.
+    </p>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn--secondary" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn--primary" [disabled]="guardando">
+        {{ guardando ? 'Guardando...' : (editando ? 'Actualizar' : 'Crear animal') }}
+      </button>
+    </div>
+  </form>
+</div>

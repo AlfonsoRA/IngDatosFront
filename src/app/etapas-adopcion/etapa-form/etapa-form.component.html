@@ -1,0 +1,59 @@
+<div class="page-header">
+  <div>
+    <h2>{{ editando ? 'Editar etapa' : 'Nueva etapa de adopción' }}</h2>
+    <p class="page-header__sub">
+      {{ editando ? 'Modifique los datos de la etapa' : 'Registrar una nueva etapa en el proceso de adopción' }}
+    </p>
+  </div>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card form-card">
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="adopcionId">Adopción *</label>
+        <select id="adopcionId" formControlName="adopcionId" [class.invalid]="campoInvalido('adopcionId')">
+          <option [ngValue]="null">Seleccione...</option>
+          <option *ngFor="let a of adopciones" [ngValue]="a.id">
+            #{{ a.id }} — {{ a.animalNombre }} / {{ a.adoptanteNombre }}
+          </option>
+        </select>
+        <span *ngIf="campoInvalido('adopcionId')" class="error">Seleccione una adopción.</span>
+      </div>
+      <div class="form-group">
+        <label for="refugioId">Refugio *</label>
+        <select id="refugioId" formControlName="refugioId" [class.invalid]="campoInvalido('refugioId')">
+          <option [ngValue]="null">Seleccione...</option>
+          <option *ngFor="let r of refugios" [ngValue]="r.id">{{ r.nombre }}</option>
+        </select>
+        <span *ngIf="campoInvalido('refugioId')" class="error">Seleccione un refugio.</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fechaInicio">Fecha inicio *</label>
+        <input id="fechaInicio" type="date" formControlName="fechaInicio" [class.invalid]="campoInvalido('fechaInicio')" />
+        <span *ngIf="campoInvalido('fechaInicio')" class="error">La fecha de inicio es obligatoria.</span>
+      </div>
+      <div class="form-group">
+        <label for="fechaFin">Fecha fin</label>
+        <input id="fechaFin" type="date" formControlName="fechaFin" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="observaciones">Observaciones</label>
+      <textarea id="observaciones" rows="3" formControlName="observaciones"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn--secondary" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn--primary" [disabled]="guardando">
+        {{ guardando ? 'Guardando...' : (editando ? 'Actualizar' : 'Crear etapa') }}
+      </button>
+    </div>
+  </form>
+</div>

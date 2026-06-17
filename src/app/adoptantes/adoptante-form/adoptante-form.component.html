@@ -1,0 +1,62 @@
+<div class="page-header">
+  <div>
+    <h2>{{ editando ? 'Editar adoptante' : 'Nuevo adoptante' }}</h2>
+    <p class="page-header__sub">
+      {{ editando ? 'Modifique los datos del adoptante' : 'Alta de una nueva persona interesada en adoptar' }}
+    </p>
+  </div>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card form-card">
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="dni">DNI *</label>
+        <input id="dni" type="text" formControlName="dni" [class.invalid]="campoInvalido('dni')" />
+        <span *ngIf="campoInvalido('dni')" class="error">El DNI es obligatorio.</span>
+      </div>
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input id="telefono" type="text" formControlName="telefono" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="nombre">Nombre *</label>
+        <input id="nombre" type="text" formControlName="nombre" [class.invalid]="campoInvalido('nombre')" />
+        <span *ngIf="campoInvalido('nombre')" class="error">El nombre es obligatorio.</span>
+      </div>
+      <div class="form-group">
+        <label for="apellido">Apellido *</label>
+        <input id="apellido" type="text" formControlName="apellido" [class.invalid]="campoInvalido('apellido')" />
+        <span *ngIf="campoInvalido('apellido')" class="error">El apellido es obligatorio.</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" [class.invalid]="campoInvalido('email')" />
+        <span *ngIf="campoInvalido('email')" class="error">Email inválido.</span>
+      </div>
+      <div class="form-group form-group--checkbox">
+        <label>
+          <input type="checkbox" formControlName="adoptantePrevio" />
+          Adoptante previo
+        </label>
+      </div>
+    </div>
+
+    <app-direccion-fields [group]="direccionGroup"></app-direccion-fields>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn--secondary" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn--primary" [disabled]="guardando">
+        {{ guardando ? 'Guardando...' : (editando ? 'Actualizar' : 'Crear adoptante') }}
+      </button>
+    </div>
+  </form>
+</div>

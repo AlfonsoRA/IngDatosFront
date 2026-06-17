@@ -1,0 +1,74 @@
+<div class="page-header">
+  <div>
+    <h2>Etapas de adopción</h2>
+    <p class="page-header__sub">Seguimiento de etapas por adopción y refugio</p>
+  </div>
+  <a routerLink="/etapas-adopcion/nuevo" class="btn btn--primary">+ Nueva etapa</a>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card filtros">
+  <div class="filtros__grid">
+    <div class="form-group">
+      <label for="filtroAdopcion">Adopción</label>
+      <select id="filtroAdopcion" [(ngModel)]="filtroAdopcionId" (change)="aplicarFiltros()">
+        <option [ngValue]="null">Todas</option>
+        <option *ngFor="let a of adopciones" [ngValue]="a.id">
+          #{{ a.id }} — {{ a.animalNombre }} / {{ a.adoptanteNombre }}
+        </option>
+      </select>
+    </div>
+    <div class="filtros__actions">
+      <button type="button" class="btn btn--secondary btn--sm" (click)="aplicarFiltros()">Filtrar</button>
+      <button type="button" class="btn btn--secondary btn--sm" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <p *ngIf="cargando" class="loading">Cargando etapas...</p>
+
+  <div *ngIf="!cargando && etapas.length === 0" class="empty">
+    No hay etapas registradas. <a routerLink="/etapas-adopcion/nuevo">Registrar la primera</a>
+  </div>
+
+  <div *ngIf="!cargando && etapas.length > 0" class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Adopción</th>
+          <th>Refugio</th>
+          <th>Inicio</th>
+          <th>Fin</th>
+          <th>Observaciones</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of etapas">
+          <td>{{ e.id }}</td>
+          <td>#{{ e.adopcionId }}</td>
+          <td>{{ e.refugioNombre }}</td>
+          <td>{{ e.fechaInicio }}</td>
+          <td>{{ e.fechaFin || '—' }}</td>
+          <td>{{ e.observaciones || '—' }}</td>
+          <td>
+            <div class="actions">
+              <a [routerLink]="['/etapas-adopcion/editar', e.id]" class="btn btn--secondary btn--sm">Editar</a>
+              <button
+                type="button"
+                class="btn btn--danger btn--sm"
+                [disabled]="eliminandoId === e.id"
+                (click)="confirmarEliminar(e)"
+              >
+                {{ eliminandoId === e.id ? '...' : 'Eliminar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

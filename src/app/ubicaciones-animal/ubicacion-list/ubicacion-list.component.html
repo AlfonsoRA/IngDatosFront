@@ -1,0 +1,62 @@
+<div class="page-header">
+  <div>
+    <h2>Ubicaciones de animales</h2>
+    <p class="page-header__sub">Historial de ubicaciones por refugio (solo lectura)</p>
+  </div>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card filtros">
+  <div class="filtros__grid">
+    <div class="form-group">
+      <label for="filtroAnimal">Animal</label>
+      <select id="filtroAnimal" [(ngModel)]="filtroAnimalId" (change)="aplicarFiltros()">
+        <option [ngValue]="null">Todos</option>
+        <option *ngFor="let a of animales" [ngValue]="a.id">{{ a.nombre }}</option>
+      </select>
+    </div>
+    <div class="filtros__actions">
+      <button type="button" class="btn btn--secondary btn--sm" (click)="aplicarFiltros()">Filtrar</button>
+      <button type="button" class="btn btn--secondary btn--sm" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <p *ngIf="cargando" class="loading">Cargando ubicaciones...</p>
+
+  <div *ngIf="!cargando && ubicaciones.length === 0" class="empty">
+    No hay ubicaciones registradas.
+  </div>
+
+  <div *ngIf="!cargando && ubicaciones.length > 0" class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Animal</th>
+          <th>Refugio</th>
+          <th>Ingreso</th>
+          <th>Salida</th>
+          <th>Motivo traslado</th>
+          <th>Actual</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of ubicaciones">
+          <td>{{ u.id }}</td>
+          <td><strong>{{ u.animalNombre }}</strong></td>
+          <td>{{ u.refugioNombre }}</td>
+          <td>{{ u.fechaIngreso }}</td>
+          <td>{{ u.fechaSalida || '—' }}</td>
+          <td>{{ u.motivoTraslado || '—' }}</td>
+          <td>
+            <span *ngIf="u.esActual" class="badge">Actual</span>
+            <span *ngIf="!u.esActual">—</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

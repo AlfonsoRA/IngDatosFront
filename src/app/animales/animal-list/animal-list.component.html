@@ -1,0 +1,101 @@
+<div class="page-header">
+  <div>
+    <h2>Animales</h2>
+    <p class="page-header__sub">Fichas de animales en la red PatitasUnidas</p>
+  </div>
+  <a routerLink="/animales/nuevo" class="btn btn--primary">+ Nuevo animal</a>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card filtros">
+  <div class="filtros__grid">
+    <div class="form-group">
+      <label for="filtroRefugio">Refugio</label>
+      <select id="filtroRefugio" [(ngModel)]="filtroRefugioId" (change)="aplicarFiltros()">
+        <option [ngValue]="null">Todos</option>
+        <option *ngFor="let r of refugios" [ngValue]="r.id">{{ r.nombre }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="filtroEspecie">Especie</label>
+      <input
+        id="filtroEspecie"
+        type="text"
+        [(ngModel)]="filtroEspecie"
+        placeholder="Perro, Gato..."
+        (keyup.enter)="aplicarFiltros()"
+      />
+    </div>
+    <div class="form-group">
+      <label for="filtroEstado">Disponibilidad</label>
+      <select id="filtroEstado" [(ngModel)]="filtroEstado" (change)="aplicarFiltros()">
+        <option value="">Todos</option>
+        <option *ngFor="let e of estados" [value]="e">{{ estadoLabels[e] }}</option>
+      </select>
+    </div>
+    <div class="filtros__actions">
+      <button type="button" class="btn btn--secondary btn--sm" (click)="aplicarFiltros()">Filtrar</button>
+      <button type="button" class="btn btn--secondary btn--sm" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <p *ngIf="cargando" class="loading">Cargando animales...</p>
+
+  <div *ngIf="!cargando && animales.length === 0" class="empty">
+    No hay animales registrados. <a routerLink="/animales/nuevo">Registrar el primero</a>
+  </div>
+
+  <div *ngIf="!cargando && animales.length > 0" class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Especie</th>
+          <th>Raza</th>
+          <th>Edad</th>
+          <th>Castrado</th>
+          <th>Disponibilidad</th>
+          <th>Refugio</th>
+          <th>Ingreso</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of animales">
+          <td>{{ a.id }}</td>
+          <td><strong>{{ a.nombre }}</strong></td>
+          <td>{{ a.especie }}</td>
+          <td>{{ a.raza || '—' }}</td>
+          <td>{{ a.edad != null ? a.edad + ' años' : '—' }}</td>
+          <td>{{ a.esCastrado ? 'Sí' : 'No' }}</td>
+          <td>
+            <span class="badge" [class]="claseBadge(a.estadoDisponibilidad)">
+              {{ etiquetaEstado(a.estadoDisponibilidad) }}
+            </span>
+          </td>
+          <td>{{ a.refugioNombre }}</td>
+          <td>{{ a.fechaIngreso }}</td>
+          <td>
+            <div class="actions">
+              <a [routerLink]="['/historial-medico']" [queryParams]="{ animalId: a.id }" class="btn btn--secondary btn--sm" title="Historial médico">💉</a>
+              <a [routerLink]="['/ubicaciones-animal']" [queryParams]="{ animalId: a.id }" class="btn btn--secondary btn--sm" title="Ubicaciones">📍</a>
+              <a [routerLink]="['/animales/editar', a.id]" class="btn btn--secondary btn--sm">Editar</a>
+              <button
+                type="button"
+                class="btn btn--danger btn--sm"
+                [disabled]="eliminandoId === a.id"
+                (click)="confirmarEliminar(a)"
+              >
+                {{ eliminandoId === a.id ? '...' : 'Eliminar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

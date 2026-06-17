@@ -1,0 +1,61 @@
+<div class="page-header">
+  <div>
+    <h2>Refugios</h2>
+    <p class="page-header__sub">ABM de sedes de la red PatitasUnidas (AMBA)</p>
+  </div>
+  <a routerLink="/refugios/nuevo" class="btn btn--primary">+ Nuevo refugio</a>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card">
+  <p *ngIf="cargando" class="loading">Cargando refugios...</p>
+
+  <div *ngIf="!cargando && refugios.length === 0" class="empty">
+    No hay refugios registrados. <a routerLink="/refugios/nuevo">Crear el primero</a>
+  </div>
+
+  <div *ngIf="!cargando && refugios.length > 0" class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Dirección</th>
+          <th>Capacidad</th>
+          <th>Responsable</th>
+          <th>Contacto</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of refugios">
+          <td>{{ r.id }}</td>
+          <td><strong>{{ r.nombre }}</strong></td>
+          <td>{{ domicilioRefugio(r) }}</td>
+          <td>{{ capacidadRefugio(r) }}</td>
+          <td>{{ r.responsable }}</td>
+          <td>
+            <span *ngIf="r.telefono">{{ r.telefono }}</span>
+            <span *ngIf="r.telefono && r.email"><br /></span>
+            <span *ngIf="r.email" class="muted">{{ r.email }}</span>
+            <span *ngIf="!r.telefono && !r.email">—</span>
+          </td>
+          <td>
+            <div class="actions">
+              <a [routerLink]="['/refugios/editar', r.id]" class="btn btn--secondary btn--sm">Editar</a>
+              <button
+                type="button"
+                class="btn btn--danger btn--sm"
+                [disabled]="eliminandoId === r.id"
+                (click)="confirmarEliminar(r)"
+              >
+                {{ eliminandoId === r.id ? '...' : 'Eliminar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

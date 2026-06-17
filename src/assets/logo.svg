@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PatitasUnidas">
+  <rect width="64" height="64" rx="14" fill="#1b4332"/>
+  <g fill="#95d5b2">
+    <ellipse cx="32" cy="38" rx="11" ry="9"/>
+    <circle cx="18" cy="24" r="6"/>
+    <circle cx="32" cy="18" r="6"/>
+    <circle cx="46" cy="24" r="6"/>
+    <circle cx="52" cy="36" r="5"/>
+    <circle cx="12" cy="36" r="5"/>
+  </g>
+</svg>

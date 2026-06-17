@@ -1,0 +1,36 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--color-primary-dark);
+  }
+
+  &__sub {
+    margin: 0.25rem 0 0;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+}
+
+.loading, .empty {
+  text-align: center;
+  color: var(--color-muted);
+  padding: 2rem;
+}
+
+.empty a {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}

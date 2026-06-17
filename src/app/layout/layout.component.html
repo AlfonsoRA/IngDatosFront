@@ -1,0 +1,35 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <span class="sidebar__logo">🐕</span>
+      <div>
+        <h1>PatitasUnidas</h1>
+        <p>Red de refugios AMBA</p>
+      </div>
+    </div>
+
+    <nav class="sidebar__nav">
+      <a
+        *ngFor="let item of menuItems"
+        [routerLink]="item.disabled ? null : item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.route === '/' }"
+        class="nav-item"
+        [class.nav-item--disabled]="item.disabled"
+        [attr.title]="item.disabled ? 'Próximamente' : item.label"
+      >
+        <span class="nav-item__icon">{{ item.icon }}</span>
+        <span>{{ item.label }}</span>
+        <span *ngIf="item.disabled" class="nav-item__badge">Pronto</span>
+      </a>
+    </nav>
+
+    <footer class="sidebar__footer">
+      <small>PatitasUnidas</small>
+    </footer>
+  </aside>
+
+  <main class="main">
+    <router-outlet></router-outlet>
+  </main>
+</div>

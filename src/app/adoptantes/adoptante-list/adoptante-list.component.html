@@ -1,0 +1,54 @@
+<div class="page-header">
+  <div>
+    <h2>Adoptantes</h2>
+    <p class="page-header__sub">ABM de personas interesadas en adoptar</p>
+  </div>
+  <a routerLink="/adoptantes/nuevo" class="btn btn--primary">+ Nuevo adoptante</a>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card">
+  <p *ngIf="cargando" class="loading">Cargando adoptantes...</p>
+
+  <div *ngIf="!cargando && adoptantes.length === 0" class="empty">
+    No hay adoptantes registrados. <a routerLink="/adoptantes/nuevo">Registrar el primero</a>
+  </div>
+
+  <div *ngIf="!cargando && adoptantes.length > 0" class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>DNI</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of adoptantes">
+          <td>{{ a.dni }}</td>
+          <td><strong>{{ a.nombre }}</strong></td>
+          <td>{{ a.apellido }}</td>
+          <td>{{ a.telefono || '—' }}</td>
+          <td>{{ a.email || '—' }}</td>
+          <td>
+            <div class="actions">
+              <a [routerLink]="['/adoptantes/editar', a.id]" class="btn btn--secondary btn--sm">Editar</a>
+              <button
+                type="button"
+                class="btn btn--danger btn--sm"
+                [disabled]="eliminandoId === a.id"
+                (click)="confirmarEliminar(a)"
+              >
+                {{ eliminandoId === a.id ? '...' : 'Eliminar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

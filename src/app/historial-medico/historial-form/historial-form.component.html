@@ -1,0 +1,88 @@
+<div class="page-header">
+  <div>
+    <h2>{{ editando ? 'Editar registro médico' : 'Nuevo registro médico' }}</h2>
+    <p class="page-header__sub">
+      {{ editando ? 'Modifique los datos del registro' : 'Registrar atención veterinaria o vacunas' }}
+    </p>
+  </div>
+</div>
+
+<div *ngIf="error" class="alert alert--error">{{ error }}</div>
+
+<div class="card form-card">
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="animalId">Animal *</label>
+        <select id="animalId" formControlName="animalId" [class.invalid]="campoInvalido('animalId')">
+          <option [ngValue]="null">Seleccione...</option>
+          <option *ngFor="let a of animales" [ngValue]="a.id">{{ a.nombre }} ({{ a.especie }})</option>
+        </select>
+        <span *ngIf="campoInvalido('animalId')" class="error">Seleccione un animal.</span>
+      </div>
+      <div class="form-group">
+        <label for="fecha">Fecha *</label>
+        <input id="fecha" type="date" formControlName="fecha" [class.invalid]="campoInvalido('fecha')" />
+        <span *ngIf="campoInvalido('fecha')" class="error">La fecha es obligatoria.</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="nombreVeterinaria">Veterinaria</label>
+        <input id="nombreVeterinaria" type="text" formControlName="nombreVeterinaria" />
+      </div>
+      <div class="form-group">
+        <label for="tipoIntervencion">Tipo de intervención</label>
+        <input id="tipoIntervencion" type="text" formControlName="tipoIntervencion" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="diagnostico">Diagnóstico</label>
+        <input id="diagnostico" type="text" formControlName="diagnostico" />
+      </div>
+      <div class="form-group">
+        <label for="medicamento">Medicamento</label>
+        <input id="medicamento" type="text" formControlName="medicamento" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="observacion">Observación</label>
+      <textarea id="observacion" rows="3" formControlName="observacion"></textarea>
+    </div>
+
+    <fieldset class="direccion-fieldset">
+      <legend>Vacunas anuales</legend>
+      <div class="form-row">
+        <div class="form-group form-group--checkbox">
+          <label>
+            <input type="checkbox" formControlName="antirrabicaAnual" />
+            Antirrábica anual
+          </label>
+        </div>
+        <div class="form-group form-group--checkbox">
+          <label>
+            <input type="checkbox" formControlName="sextupleAnual" />
+            Sextuple anual
+          </label>
+        </div>
+        <div class="form-group form-group--checkbox">
+          <label>
+            <input type="checkbox" formControlName="tripleAnual" />
+            Triple anual
+          </label>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn--secondary" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn--primary" [disabled]="guardando">
+        {{ guardando ? 'Guardando...' : (editando ? 'Actualizar' : 'Crear registro') }}
+      </button>
+    </div>
+  </form>
+</div>

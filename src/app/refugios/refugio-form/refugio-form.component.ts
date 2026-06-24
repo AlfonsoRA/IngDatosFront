@@ -4,6 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RefugioService } from '../services/refugio.service';
 import { RefugioRequest } from '../models/refugio.model';
 import { mensajeApiError } from '../../shared/utils/api-error.util';
+import {
+  createDireccionFormGroup,
+  direccionFromForm,
+  patchDireccionForm,
+} from '../../shared/utils/direccion-form.util';
 
 @Component({
   selector: 'app-refugio-form',
@@ -31,13 +36,7 @@ export class RefugioFormComponent implements OnInit {
       telefono: ['', [Validators.maxLength(30)]],
       capacidad: [null, [Validators.required, Validators.min(1)]],
       responsable: ['', [Validators.required, Validators.maxLength(100)]],
-      direccion: this.fb.group({
-        calle: ['', [Validators.required, Validators.maxLength(120)]],
-        numero: ['', [Validators.maxLength(20)]],
-        localidad: ['', [Validators.required, Validators.maxLength(80)]],
-        partido: ['', [Validators.maxLength(80)]],
-        cp: ['', [Validators.maxLength(10)]],
-      }),
+      direccion: createDireccionFormGroup(this.fb),
     });
 
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -48,15 +47,19 @@ export class RefugioFormComponent implements OnInit {
         next: (refugio) => {
           this.form.patchValue({
             nombre: refugio.nombre,
-            email: refugio.email ?? '',
+            email: refugio.email?.trim() ?? '',
             telefono: refugio.telefono ?? '',
             capacidad: refugio.capacidad ?? refugio.capacidadMaxima,
             responsable: refugio.responsable,
-            direccion: refugio.direccion ?? {
-              calle: refugio.domicilio ?? '',
-              localidad: 'AMBA',
-            },
           });
+          if (refugio.direccion) {
+            patchDireccionForm(this.form.get('direccion') as FormGroup, refugio.direccion);
+          } else if (refugio.domicilio) {
+            patchDireccionForm(this.form.get('direccion') as FormGroup, {
+              calle: refugio.domicilio,
+              localidad: 'AMBA',
+            });
+          }
         },
         error: () => {
           this.error = 'Refugio no encontrado.';
@@ -65,13 +68,12 @@ export class RefugioFormComponent implements OnInit {
     }
   }
 
-  campoInvalido(campo: string): boolean {
-    const control = this.form.get(campo);
-    return !!(control && control.invalid && (control.dirty || control.touched));
+  get direccionGroup(): FormGroup {
+    return this.form.get('direccion') as FormGroup;
   }
 
-  campoDireccionInvalido(campo: string): boolean {
-    const control = this.form.get(`direccion.${campo}`);
+  campoInvalido(campo: string): boolean {
+    const control = this.form.get(campo);
     return !!(control && control.invalid && (control.dirty || control.touched));
   }
 
@@ -86,11 +88,11 @@ export class RefugioFormComponent implements OnInit {
     const v = this.form.value;
     const datos: RefugioRequest = {
       nombre: v.nombre,
-      email: v.email || undefined,
+      email: v.email?.trim() || undefined,
       telefono: v.telefono || undefined,
       capacidad: v.capacidad,
       responsable: v.responsable,
-      direccion: v.direccion,
+      direccion: direccionFromForm(this.direccionGroup),
     };
 
     const peticion = this.editando && this.refugioId

@@ -8,7 +8,10 @@ const COLUMN_LABELS: Record<string, string> = {
   raza: 'Raza',
   edad: 'Edad',
   fecha_ingreso: 'Fecha ingreso',
+  fecha_nacimiento_estimada: 'Nacimiento est.',
   es_castrado: 'Castrado',
+  castrado: 'Castrado',
+  estado: 'Estado',
   refugio_nombre: 'Refugio',
   total_atenciones: 'Atenciones',
   ultima_atencion: 'Última atención',
@@ -29,12 +32,16 @@ const ESTADO_LABELS: Record<string, string> = {
   DISPONIBLE: 'Disponible',
   EN_PROCESO: 'En proceso',
   ADOPTADO: 'Adoptado',
-  COMPLETADA: 'Completada',
-  SOLICITUD: 'Solicitud',
-  RECHAZADA: 'Rechazada',
-  ACTIVO: 'Activo',
-  FINALIZADO: 'Finalizado',
-  CANCELADO: 'Cancelado',
+  Concretada: 'Concretada',
+  Solicitada: 'Solicitada',
+  'En proceso': 'En proceso',
+  Aprobada: 'Aprobada',
+  Rechazada: 'Rechazada',
+  'En tránsito': 'En tránsito',
+  'En refugio': 'En refugio',
+  Finalizado: 'Finalizado',
+  Cancelado: 'Cancelado',
+  Adoptado: 'Adoptado',
 };
 
 export function etiquetaColumna(columna: string): string {
@@ -58,22 +65,17 @@ export function formatearValorCelda(columna: string, valor: unknown): string {
     return valor ? 'Sí' : 'No';
   }
 
-  if (key === 'en_sobrecupo' && (valor === 1 || valor === '1' || valor === true)) {
+  if ((key === 'en_sobrecupo' || key === 'castrado' || key === 'es_castrado')
+      && (valor === 1 || valor === '1' || valor === true)) {
     return 'Sí';
   }
-  if (key === 'en_sobrecupo' && (valor === 0 || valor === '0' || valor === false)) {
-    return 'No';
-  }
-
-  if (key === 'es_castrado' && (valor === 1 || valor === '1')) {
-    return 'Sí';
-  }
-  if (key === 'es_castrado' && (valor === 0 || valor === '0')) {
+  if ((key === 'en_sobrecupo' || key === 'castrado' || key === 'es_castrado')
+      && (valor === 0 || valor === '0' || valor === false)) {
     return 'No';
   }
 
   if (key.includes('estado') && typeof valor === 'string') {
-    return ESTADO_LABELS[valor] ?? valor.replace(/_/g, ' ').toLowerCase();
+    return ESTADO_LABELS[valor] ?? valor;
   }
 
   if (typeof valor === 'string' && /^\d{4}-\d{2}-\d{2}/.test(valor)) {

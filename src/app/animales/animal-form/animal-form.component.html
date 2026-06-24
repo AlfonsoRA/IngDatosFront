@@ -31,6 +31,14 @@
 
     <div class="form-row">
       <div class="form-group">
+        <label for="sexo">Sexo *</label>
+        <select id="sexo" formControlName="sexo" [class.invalid]="campoInvalido('sexo')">
+          <option value="" disabled>Seleccione...</option>
+          <option *ngFor="let s of sexos" [value]="s">{{ s === 'M' ? 'Macho' : 'Hembra' }}</option>
+        </select>
+        <span *ngIf="campoInvalido('sexo')" class="error">Seleccione el sexo.</span>
+      </div>
+      <div class="form-group">
         <label for="edad">Edad (años)</label>
         <input id="edad" type="number" min="0" formControlName="edad" [class.invalid]="campoInvalido('edad')" />
         <span *ngIf="campoInvalido('edad')" class="error">La edad no puede ser negativa.</span>

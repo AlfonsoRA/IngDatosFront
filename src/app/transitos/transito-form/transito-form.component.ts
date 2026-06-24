@@ -52,7 +52,7 @@ export class TransitoFormComponent implements OnInit {
       fechaInicio: ['', Validators.required],
       fechaFinEstimada: [''],
       fechaFinReal: [''],
-      estadoActual: ['ACTIVO', Validators.required],
+      estadoActual: ['En tránsito', Validators.required],
       observaciones: ['', Validators.maxLength(500)],
     });
 

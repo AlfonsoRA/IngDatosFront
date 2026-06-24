@@ -56,8 +56,10 @@
           <th>Nombre</th>
           <th>Especie</th>
           <th>Raza</th>
+          <th>Sexo</th>
           <th>Edad</th>
           <th>Castrado</th>
+          <th>Estado</th>
           <th>Disponibilidad</th>
           <th>Refugio</th>
           <th>Ingreso</th>
@@ -70,14 +72,19 @@
           <td><strong>{{ a.nombre }}</strong></td>
           <td>{{ a.especie }}</td>
           <td>{{ a.raza || '—' }}</td>
+          <td>{{ etiquetaSexo(a.sexo) }}</td>
           <td>{{ a.edad != null ? a.edad + ' años' : '—' }}</td>
           <td>{{ a.esCastrado ? 'Sí' : 'No' }}</td>
+          <td>
+            <span *ngIf="a.estado" class="badge" [class]="claseBadge(a.estado)">{{ a.estado }}</span>
+            <span *ngIf="!a.estado">—</span>
+          </td>
           <td>
             <span class="badge" [class]="claseBadge(a.estadoDisponibilidad)">
               {{ etiquetaEstado(a.estadoDisponibilidad) }}
             </span>
           </td>
-          <td>{{ a.refugioNombre }}</td>
+          <td>{{ a.refugioNombre || '—' }}</td>
           <td>{{ a.fechaIngreso }}</td>
           <td>
             <div class="actions">

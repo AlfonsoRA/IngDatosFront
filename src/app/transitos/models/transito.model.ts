@@ -24,10 +24,10 @@ export interface TransitoRequest {
   observaciones?: string;
 }
 
-export const ESTADOS_TRANSITO = ['ACTIVO', 'FINALIZADO', 'CANCELADO'] as const;
+export const ESTADOS_TRANSITO = ['En tránsito', 'Finalizado', 'Cancelado'] as const;
 
 export const ESTADO_TRANSITO_LABELS: Record<string, string> = {
-  ACTIVO: 'Activo',
-  FINALIZADO: 'Finalizado',
-  CANCELADO: 'Cancelado',
+  'En tránsito': 'En tránsito',
+  Finalizado: 'Finalizado',
+  Cancelado: 'Cancelado',
 };

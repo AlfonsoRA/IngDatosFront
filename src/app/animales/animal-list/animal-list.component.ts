@@ -3,6 +3,8 @@ import {
   Animal,
   ESTADO_DISPONIBILIDAD_LABELS,
   EstadoDisponibilidad,
+  claseBadgeEstado,
+  etiquetaSexo,
 } from '../models/animal.model';
 import { AnimalService } from '../services/animal.service';
 import { Refugio } from '../../refugios/models/refugio.model';
@@ -77,8 +79,10 @@ export class AnimalListComponent implements OnInit {
     return ESTADO_DISPONIBILIDAD_LABELS[estado as EstadoDisponibilidad] ?? estado;
   }
 
+  etiquetaSexo = etiquetaSexo;
+
   claseBadge(estado: string): string {
-    return 'badge--' + estado.toLowerCase();
+    return claseBadgeEstado(estado);
   }
 
   confirmarEliminar(animal: Animal): void {

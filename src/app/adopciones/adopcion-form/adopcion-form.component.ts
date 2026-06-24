@@ -45,7 +45,7 @@ export class AdopcionFormComponent implements OnInit {
       animalId: [null, Validators.required],
       adoptanteId: [null, Validators.required],
       fechaSolicitud: ['', Validators.required],
-      estadoActual: ['SOLICITUD', Validators.required],
+      estadoActual: ['Solicitada', Validators.required],
     });
 
     this.animalService.listar().subscribe({

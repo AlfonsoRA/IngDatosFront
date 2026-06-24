@@ -74,12 +74,12 @@
   font-weight: 700;
   white-space: nowrap;
 
-  &--disponible {
+  &--disponible, &--en_refugio {
     background: #d8f3dc;
     color: #1b4332;
   }
 
-  &--en_proceso {
+  &--en_proceso, &--en_transito {
     background: #fff3cd;
     color: #664d03;
   }

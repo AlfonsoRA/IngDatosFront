@@ -4,5 +4,6 @@ export interface Direccion {
   numero?: string;
   localidad: string;
   partido?: string;
+  provincia?: string;
   cp?: string;
 }

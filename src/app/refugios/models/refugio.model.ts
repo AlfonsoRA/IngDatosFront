@@ -35,8 +35,9 @@ export function domicilioRefugio(r: Refugio): string {
   if (r.direccion) {
     const d = r.direccion;
     const num = d.numero ? ` ${d.numero}` : '';
-    const cp = d.cp ? ` (${d.cp})` : '';
-    return `${d.calle}${num}, ${d.localidad}${cp}`;
+    const partido = d.partido ? ` (${d.partido})` : '';
+    const cp = d.cp ? ` — CP ${d.cp}` : '';
+    return `${d.calle}${num}, ${d.localidad}${partido}${cp}`;
   }
   return '—';
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AnimalRequest } from '../models/animal.model';
+import { AnimalRequest, SEXO_ANIMAL } from '../models/animal.model';
 import { AnimalService } from '../services/animal.service';
 import { Refugio } from '../../refugios/models/refugio.model';
 import { RefugioService } from '../../refugios/services/refugio.service';
@@ -19,6 +19,7 @@ export class AnimalFormComponent implements OnInit {
   guardando = false;
   error = '';
   refugios: Refugio[] = [];
+  readonly sexos = SEXO_ANIMAL;
 
   constructor(
     private fb: FormBuilder,
@@ -33,6 +34,7 @@ export class AnimalFormComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.maxLength(120)]],
       especie: ['', [Validators.required, Validators.maxLength(50)]],
       raza: ['', [Validators.maxLength(80)]],
+      sexo: ['', Validators.required],
       edad: [null, [Validators.min(0)]],
       fechaIngreso: ['', Validators.required],
       esCastrado: [false],
@@ -58,6 +60,7 @@ export class AnimalFormComponent implements OnInit {
             nombre: animal.nombre,
             especie: animal.especie,
             raza: animal.raza ?? '',
+            sexo: animal.sexo ?? '',
             edad: animal.edad,
             fechaIngreso: animal.fechaIngreso,
             esCastrado: animal.esCastrado,
@@ -89,6 +92,7 @@ export class AnimalFormComponent implements OnInit {
       nombre: v.nombre,
       especie: v.especie,
       raza: v.raza || undefined,
+      sexo: v.sexo || undefined,
       edad: v.edad != null && v.edad !== '' ? Number(v.edad) : undefined,
       fechaIngreso: v.fechaIngreso,
       esCastrado: !!v.esCastrado,

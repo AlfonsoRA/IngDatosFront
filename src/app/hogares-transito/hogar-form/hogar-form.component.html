@@ -18,8 +18,9 @@
         <span *ngIf="campoInvalido('dni')" class="error">El DNI es obligatorio.</span>
       </div>
       <div class="form-group">
-        <label for="telefono">Teléfono</label>
-        <input id="telefono" type="text" formControlName="telefono" />
+        <label for="telefono">Teléfono *</label>
+        <input id="telefono" type="text" formControlName="telefono" [class.invalid]="campoInvalido('telefono')" />
+        <span *ngIf="campoInvalido('telefono')" class="error">El teléfono es obligatorio.</span>
       </div>
     </div>
 
@@ -43,7 +44,7 @@
         <span *ngIf="campoInvalido('email')" class="error">Email inválido.</span>
       </div>
       <div class="form-group">
-        <label for="capacidadMaxima">Capacidad máxima *</label>
+        <label for="capacidadMaxima">Capacidad aceptada *</label>
         <input
           id="capacidadMaxima"
           type="number"
@@ -59,13 +60,13 @@
       <div class="form-group form-group--checkbox">
         <label>
           <input type="checkbox" formControlName="tieneGatos" />
-          Tiene gatos
+          Acepta gatos
         </label>
       </div>
       <div class="form-group form-group--checkbox">
         <label>
           <input type="checkbox" formControlName="tienePerros" />
-          Tiene perros
+          Acepta perros
         </label>
       </div>
     </div>

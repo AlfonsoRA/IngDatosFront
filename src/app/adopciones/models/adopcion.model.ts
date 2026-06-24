@@ -15,11 +15,18 @@ export interface AdopcionRequest {
   estadoActual: string;
 }
 
-export const ESTADOS_ADOPCION = ['SOLICITUD', 'EN_PROCESO', 'COMPLETADA', 'RECHAZADA'] as const;
+export const ESTADOS_ADOPCION = [
+  'Solicitada',
+  'En proceso',
+  'Aprobada',
+  'Rechazada',
+  'Concretada',
+] as const;
 
 export const ESTADO_ADOPCION_LABELS: Record<string, string> = {
-  SOLICITUD: 'Solicitud',
-  EN_PROCESO: 'En proceso',
-  COMPLETADA: 'Completada',
-  RECHAZADA: 'Rechazada',
+  Solicitada: 'Solicitada',
+  'En proceso': 'En proceso',
+  Aprobada: 'Aprobada',
+  Rechazada: 'Rechazada',
+  Concretada: 'Concretada',
 };

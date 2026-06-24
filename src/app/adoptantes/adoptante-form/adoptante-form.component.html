@@ -18,8 +18,9 @@
         <span *ngIf="campoInvalido('dni')" class="error">El DNI es obligatorio.</span>
       </div>
       <div class="form-group">
-        <label for="telefono">Teléfono</label>
-        <input id="telefono" type="text" formControlName="telefono" />
+        <label for="telefono">Teléfono *</label>
+        <input id="telefono" type="text" formControlName="telefono" [class.invalid]="campoInvalido('telefono')" />
+        <span *ngIf="campoInvalido('telefono')" class="error">El teléfono es obligatorio.</span>
       </div>
     </div>
 

@@ -4,19 +4,34 @@ import { Direccion } from '../models/direccion.model';
 export function createDireccionFormGroup(fb: FormBuilder): FormGroup {
   return fb.group({
     calle: ['', [Validators.required, Validators.maxLength(120)]],
-    numero: ['', [Validators.maxLength(20)]],
+    numero: ['', [Validators.required, Validators.maxLength(20)]],
     localidad: ['', [Validators.required, Validators.maxLength(80)]],
     partido: ['', [Validators.maxLength(80)]],
+    provincia: [{ value: 'BUENOS AIRES', disabled: true }],
     cp: ['', [Validators.maxLength(10)]],
   });
 }
 
 export function patchDireccionForm(form: FormGroup, direccion?: Direccion): void {
   if (direccion) {
-    form.patchValue(direccion);
+    form.patchValue({
+      calle: direccion.calle,
+      numero: direccion.numero ?? '',
+      localidad: direccion.localidad,
+      partido: direccion.partido ?? '',
+      cp: direccion.cp ?? '',
+    });
   }
 }
 
 export function direccionFromForm(form: FormGroup): Direccion {
-  return form.value as Direccion;
+  const raw = form.getRawValue();
+  return {
+    calle: raw.calle,
+    numero: raw.numero || undefined,
+    localidad: raw.localidad,
+    partido: raw.partido || undefined,
+    provincia: raw.provincia || 'BUENOS AIRES',
+    cp: raw.cp || undefined,
+  };
 }

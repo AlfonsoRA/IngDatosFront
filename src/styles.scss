@@ -251,9 +251,9 @@ table.data-table {
   font-weight: 700;
   white-space: nowrap;
   background: #e9ecef;
-  &--disponible, &--activo, &--solicitud { background: #d8f3dc; color: #1b4332; }
-  &--en_proceso { background: #fff3cd; color: #664d03; }
-  &--adoptado, &--completada, &--finalizado { background: #cfe2ff; color: #084298; }
+  &--disponible, &--activo, &--solicitud, &--solicitada, &--en_refugio { background: #d8f3dc; color: #1b4332; }
+  &--en_proceso, &--en_transito { background: #fff3cd; color: #664d03; }
+  &--adoptado, &--completada, &--finalizado, &--concretada, &--aprobada { background: #cfe2ff; color: #084298; }
   &--rechazada, &--cancelado { background: #ffe5e5; color: #c1121f; }
 }
 

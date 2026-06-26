@@ -20,4 +20,20 @@ export class ReporteService {
   adopcionesDetalle(): Observable<ReporteRow[]> {
     return this.http.get<ReporteRow[]>(`${environment.apiUrl}/reportes/adopciones-detalle`);
   }
+
+  historialMedicoCompleto(): Observable<ReporteRow[]> {
+    return this.http.get<ReporteRow[]>(`${environment.apiUrl}/reportes/historial-medico-completo`);
+  }
+
+  transitosActivos(): Observable<ReporteRow[]> {
+    return this.http.get<ReporteRow[]>(`${environment.apiUrl}/reportes/transitos-activos`);
+  }
+
+  adopcionesPorMes(): Observable<ReporteRow[]> {
+    return this.http.get<ReporteRow[]>(`${environment.apiUrl}/reportes/adopciones-por-mes`);
+  }
+
+  trasladosRefugios(): Observable<ReporteRow[]> {
+    return this.http.get<ReporteRow[]>(`${environment.apiUrl}/reportes/traslados-refugios`);
+  }
 }

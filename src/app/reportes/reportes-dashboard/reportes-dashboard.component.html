@@ -7,7 +7,15 @@
 
 <div *ngIf="error" class="alert alert--error">{{ error }}</div>
 
-<ng-container *ngFor="let tabla of [animalesDisponibles, refugiosOcupacion, adopcionesDetalle]">
+<ng-container *ngFor="let tabla of [
+  animalesDisponibles,
+  refugiosOcupacion,
+  adopcionesDetalle,
+  historialMedico,
+  transitosActivos,
+  adopcionesPorMes,
+  trasladosRefugios
+]">
   <div class="card">
     <h3>{{ tabla.titulo }}</h3>
 

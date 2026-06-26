@@ -6,4 +6,5 @@ export interface Direccion {
   partido?: string;
   provincia?: string;
   cp?: string;
+  cpaId?: number;
 }

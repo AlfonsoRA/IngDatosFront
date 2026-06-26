@@ -27,8 +27,9 @@
       <input id="provincia" type="text" formControlName="provincia" readonly />
     </div>
     <div class="form-group">
-      <label for="cp">C.P.</label>
-      <input id="cp" type="text" formControlName="cp" />
+      <label for="cp">C.P. *</label>
+      <input id="cp" type="text" formControlName="cp" [class.invalid]="campoInvalido('cp')" />
+      <span *ngIf="campoInvalido('cp')" class="error">El código postal es obligatorio.</span>
     </div>
   </div>
 </fieldset>

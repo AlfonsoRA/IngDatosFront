@@ -56,25 +56,18 @@
     </div>
 
     <fieldset class="direccion-fieldset">
-      <legend>Vacunas anuales</legend>
+      <legend>Vacunación (opcional)</legend>
       <div class="form-row">
-        <div class="form-group form-group--checkbox">
-          <label>
-            <input type="checkbox" formControlName="antirrabicaAnual" />
-            Antirrábica anual
-          </label>
+        <div class="form-group">
+          <label for="tipoVacuna">Tipo de vacuna</label>
+          <select id="tipoVacuna" formControlName="tipoVacuna">
+            <option value="">Sin vacuna</option>
+            <option *ngFor="let t of tiposVacuna" [value]="t">{{ t }}</option>
+          </select>
         </div>
-        <div class="form-group form-group--checkbox">
-          <label>
-            <input type="checkbox" formControlName="sextupleAnual" />
-            Sextuple anual
-          </label>
-        </div>
-        <div class="form-group form-group--checkbox">
-          <label>
-            <input type="checkbox" formControlName="tripleAnual" />
-            Triple anual
-          </label>
+        <div class="form-group">
+          <label for="fechaVencimiento">Vencimiento</label>
+          <input id="fechaVencimiento" type="date" formControlName="fechaVencimiento" />
         </div>
       </div>
     </fieldset>

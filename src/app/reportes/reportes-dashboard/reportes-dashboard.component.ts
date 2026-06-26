@@ -32,7 +32,35 @@ export class ReportesDashboardComponent implements OnInit {
   };
 
   adopcionesDetalle: TablaReporte = {
-    titulo: 'Detalle de adopciones',
+    titulo: 'Historial de adopciones',
+    filas: [],
+    columnas: [],
+    cargando: true,
+  };
+
+  historialMedico: TablaReporte = {
+    titulo: 'Historial médico completo',
+    filas: [],
+    columnas: [],
+    cargando: true,
+  };
+
+  transitosActivos: TablaReporte = {
+    titulo: 'Tránsitos activos',
+    filas: [],
+    columnas: [],
+    cargando: true,
+  };
+
+  adopcionesPorMes: TablaReporte = {
+    titulo: 'Adopciones concretadas por mes',
+    filas: [],
+    columnas: [],
+    cargando: true,
+  };
+
+  trasladosRefugios: TablaReporte = {
+    titulo: 'Traslados entre refugios',
     filas: [],
     columnas: [],
     cargando: true,
@@ -41,9 +69,13 @@ export class ReportesDashboardComponent implements OnInit {
   constructor(private reporteService: ReporteService) {}
 
   ngOnInit(): void {
-    this.cargarAnimalesDisponibles();
-    this.cargarRefugiosOcupacion();
-    this.cargarAdopcionesDetalle();
+    this.cargarTabla(this.animalesDisponibles, () => this.reporteService.animalesDisponibles());
+    this.cargarTabla(this.refugiosOcupacion, () => this.reporteService.refugiosOcupacion());
+    this.cargarTabla(this.adopcionesDetalle, () => this.reporteService.adopcionesDetalle());
+    this.cargarTabla(this.historialMedico, () => this.reporteService.historialMedicoCompleto());
+    this.cargarTabla(this.transitosActivos, () => this.reporteService.transitosActivos());
+    this.cargarTabla(this.adopcionesPorMes, () => this.reporteService.adopcionesPorMes());
+    this.cargarTabla(this.trasladosRefugios, () => this.reporteService.trasladosRefugios());
   }
 
   private columnasDesde(filas: ReporteRow[]): string[] {
@@ -53,44 +85,16 @@ export class ReportesDashboardComponent implements OnInit {
     return Object.keys(filas[0]);
   }
 
-  private cargarAnimalesDisponibles(): void {
-    this.reporteService.animalesDisponibles().subscribe({
+  private cargarTabla(tabla: TablaReporte, peticion: () => ReturnType<ReporteService['animalesDisponibles']>): void {
+    peticion().subscribe({
       next: (data) => {
-        this.animalesDisponibles.filas = data;
-        this.animalesDisponibles.columnas = this.columnasDesde(data);
-        this.animalesDisponibles.cargando = false;
+        tabla.filas = data;
+        tabla.columnas = this.columnasDesde(data);
+        tabla.cargando = false;
       },
       error: () => {
         this.error = 'No se pudo conectar con la API. ¿Está corriendo el backend en el puerto 8080?';
-        this.animalesDisponibles.cargando = false;
-      },
-    });
-  }
-
-  private cargarRefugiosOcupacion(): void {
-    this.reporteService.refugiosOcupacion().subscribe({
-      next: (data) => {
-        this.refugiosOcupacion.filas = data;
-        this.refugiosOcupacion.columnas = this.columnasDesde(data);
-        this.refugiosOcupacion.cargando = false;
-      },
-      error: () => {
-        this.error = 'No se pudo conectar con la API. ¿Está corriendo el backend en el puerto 8080?';
-        this.refugiosOcupacion.cargando = false;
-      },
-    });
-  }
-
-  private cargarAdopcionesDetalle(): void {
-    this.reporteService.adopcionesDetalle().subscribe({
-      next: (data) => {
-        this.adopcionesDetalle.filas = data;
-        this.adopcionesDetalle.columnas = this.columnasDesde(data);
-        this.adopcionesDetalle.cargando = false;
-      },
-      error: () => {
-        this.error = 'No se pudo conectar con la API. ¿Está corriendo el backend en el puerto 8080?';
-        this.adopcionesDetalle.cargando = false;
+        tabla.cargando = false;
       },
     });
   }

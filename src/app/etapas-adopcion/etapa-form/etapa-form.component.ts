@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EtapaAdopcionRequest } from '../models/etapa-adopcion.model';
+import {
+  ESTADOS_ETAPA,
+  EtapaAdopcionRequest,
+} from '../models/etapa-adopcion.model';
 import { EtapaAdopcionService } from '../services/etapa-adopcion.service';
-import { Adopcion } from '../../adopciones/models/adopcion.model';
+import { Adopcion, ESTADO_ADOPCION_LABELS } from '../../adopciones/models/adopcion.model';
 import { AdopcionService } from '../../adopciones/services/adopcion.service';
 import { Refugio } from '../../refugios/models/refugio.model';
 import { RefugioService } from '../../refugios/services/refugio.service';
@@ -23,6 +26,9 @@ export class EtapaFormComponent implements OnInit {
   adopciones: Adopcion[] = [];
   refugios: Refugio[] = [];
 
+  readonly estados = ESTADOS_ETAPA;
+  readonly estadoLabels = ESTADO_ADOPCION_LABELS;
+
   constructor(
     private fb: FormBuilder,
     private etapaService: EtapaAdopcionService,
@@ -36,9 +42,10 @@ export class EtapaFormComponent implements OnInit {
     this.form = this.fb.group({
       adopcionId: [null, Validators.required],
       refugioId: [null, Validators.required],
+      estado: ['Solicitada', Validators.required],
       fechaInicio: ['', Validators.required],
       fechaFin: [''],
-      observaciones: ['', Validators.maxLength(500)],
+      observaciones: ['', Validators.maxLength(200)],
     });
 
     this.adopcionService.listar().subscribe({
@@ -68,6 +75,7 @@ export class EtapaFormComponent implements OnInit {
           this.form.patchValue({
             adopcionId: etapa.adopcionId,
             refugioId: etapa.refugioId,
+            estado: etapa.estado,
             fechaInicio: etapa.fechaInicio,
             fechaFin: etapa.fechaFin ?? '',
             observaciones: etapa.observaciones ?? '',
@@ -97,6 +105,7 @@ export class EtapaFormComponent implements OnInit {
     const datos: EtapaAdopcionRequest = {
       adopcionId: v.adopcionId,
       refugioId: v.refugioId,
+      estado: v.estado,
       fechaInicio: v.fechaInicio,
       fechaFin: v.fechaFin || undefined,
       observaciones: v.observaciones || undefined,

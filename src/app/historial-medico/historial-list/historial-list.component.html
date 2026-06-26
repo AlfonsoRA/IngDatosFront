@@ -39,10 +39,9 @@
           <th>Animal</th>
           <th>Fecha</th>
           <th>Veterinaria</th>
-          <th>Diagnóstico</th>
-          <th>Antirrábica</th>
-          <th>Sextuple</th>
-          <th>Triple</th>
+          <th>Intervención</th>
+          <th>Vacuna</th>
+          <th>Vencimiento</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -52,10 +51,9 @@
           <td><strong>{{ r.animalNombre }}</strong></td>
           <td>{{ r.fecha }}</td>
           <td>{{ r.nombreVeterinaria || '—' }}</td>
-          <td>{{ r.diagnostico || '—' }}</td>
-          <td>{{ r.antirrabicaAnual ? 'Sí' : 'No' }}</td>
-          <td>{{ r.sextupleAnual ? 'Sí' : 'No' }}</td>
-          <td>{{ r.tripleAnual ? 'Sí' : 'No' }}</td>
+          <td>{{ r.tipoIntervencion }}</td>
+          <td>{{ r.tipoVacuna || '—' }}</td>
+          <td>{{ r.fechaVencimiento || '—' }}</td>
           <td>
             <div class="actions">
               <a [routerLink]="['/historial-medico/editar', r.id]" class="btn btn--secondary btn--sm">Editar</a>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HistorialMedicoRequest } from '../models/historial-medico.model';
+import { HistorialMedicoRequest, TIPOS_VACUNA } from '../models/historial-medico.model';
 import { HistorialMedicoService } from '../services/historial-medico.service';
 import { Animal } from '../../animales/models/animal.model';
 import { AnimalService } from '../../animales/services/animal.service';
@@ -19,6 +19,7 @@ export class HistorialFormComponent implements OnInit {
   guardando = false;
   error = '';
   animales: Animal[] = [];
+  readonly tiposVacuna = TIPOS_VACUNA;
 
   constructor(
     private fb: FormBuilder,
@@ -32,14 +33,13 @@ export class HistorialFormComponent implements OnInit {
     this.form = this.fb.group({
       animalId: [null, Validators.required],
       nombreVeterinaria: ['', Validators.maxLength(120)],
-      observacion: ['', Validators.maxLength(500)],
-      medicamento: ['', Validators.maxLength(200)],
-      diagnostico: ['', Validators.maxLength(500)],
-      tipoIntervencion: ['', [Validators.required, Validators.maxLength(120)]],
+      observacion: ['', Validators.maxLength(200)],
+      medicamento: ['', Validators.maxLength(150)],
+      diagnostico: ['', Validators.maxLength(150)],
+      tipoIntervencion: ['', [Validators.required, Validators.maxLength(100)]],
       fecha: ['', Validators.required],
-      antirrabicaAnual: [false],
-      sextupleAnual: [false],
-      tripleAnual: [false],
+      tipoVacuna: ['', Validators.maxLength(100)],
+      fechaVencimiento: [''],
     });
 
     this.animalService.listar().subscribe({
@@ -67,11 +67,10 @@ export class HistorialFormComponent implements OnInit {
             observacion: registro.observacion ?? '',
             medicamento: registro.medicamento ?? '',
             diagnostico: registro.diagnostico ?? '',
-            tipoIntervencion: registro.tipoIntervencion ?? '',
+            tipoIntervencion: registro.tipoIntervencion,
             fecha: registro.fecha,
-            antirrabicaAnual: registro.antirrabicaAnual ?? false,
-            sextupleAnual: registro.sextupleAnual ?? false,
-            tripleAnual: registro.tripleAnual ?? false,
+            tipoVacuna: registro.tipoVacuna ?? '',
+            fechaVencimiento: registro.fechaVencimiento ?? '',
           });
         },
         error: () => {
@@ -87,6 +86,12 @@ export class HistorialFormComponent implements OnInit {
   }
 
   guardar(): void {
+    const v = this.form.value;
+    if (v.fechaVencimiento && !v.tipoVacuna) {
+      this.error = 'Si indica vencimiento de vacuna, debe seleccionar el tipo de vacuna.';
+      return;
+    }
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -94,7 +99,6 @@ export class HistorialFormComponent implements OnInit {
 
     this.guardando = true;
     this.error = '';
-    const v = this.form.value;
     const datos: HistorialMedicoRequest = {
       animalId: v.animalId,
       nombreVeterinaria: v.nombreVeterinaria || undefined,
@@ -103,9 +107,8 @@ export class HistorialFormComponent implements OnInit {
       diagnostico: v.diagnostico || undefined,
       tipoIntervencion: v.tipoIntervencion,
       fecha: v.fecha,
-      antirrabicaAnual: !!v.antirrabicaAnual,
-      sextupleAnual: !!v.sextupleAnual,
-      tripleAnual: !!v.tripleAnual,
+      tipoVacuna: v.tipoVacuna || undefined,
+      fechaVencimiento: v.fechaVencimiento || undefined,
     };
 
     const peticion = this.editando && this.historialId

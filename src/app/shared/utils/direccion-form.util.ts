@@ -8,7 +8,8 @@ export function createDireccionFormGroup(fb: FormBuilder): FormGroup {
     localidad: ['', [Validators.required, Validators.maxLength(80)]],
     partido: ['', [Validators.maxLength(80)]],
     provincia: [{ value: 'BUENOS AIRES', disabled: true }],
-    cp: ['', [Validators.maxLength(10)]],
+    cp: ['', [Validators.required, Validators.maxLength(10)]],
+    cpaId: [null as number | null],
   });
 }
 
@@ -20,18 +21,23 @@ export function patchDireccionForm(form: FormGroup, direccion?: Direccion): void
       localidad: direccion.localidad,
       partido: direccion.partido ?? '',
       cp: direccion.cp ?? '',
+      cpaId: direccion.cpaId ?? null,
     });
   }
 }
 
 export function direccionFromForm(form: FormGroup): Direccion {
   const raw = form.getRawValue();
-  return {
+  const direccion: Direccion = {
     calle: raw.calle,
     numero: raw.numero || undefined,
     localidad: raw.localidad,
     partido: raw.partido || undefined,
     provincia: raw.provincia || 'BUENOS AIRES',
-    cp: raw.cp || undefined,
+    cp: raw.cp?.trim() || undefined,
   };
+  if (raw.cpaId != null) {
+    direccion.cpaId = raw.cpaId;
+  }
+  return direccion;
 }

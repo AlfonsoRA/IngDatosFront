@@ -6,11 +6,10 @@ export interface HistorialMedico {
   observacion?: string;
   medicamento?: string;
   diagnostico?: string;
-  tipoIntervencion?: string;
+  tipoIntervencion: string;
   fecha: string;
-  antirrabicaAnual?: boolean;
-  sextupleAnual?: boolean;
-  tripleAnual?: boolean;
+  tipoVacuna?: string;
+  fechaVencimiento?: string;
 }
 
 export interface HistorialMedicoRequest {
@@ -19,9 +18,10 @@ export interface HistorialMedicoRequest {
   observacion?: string;
   medicamento?: string;
   diagnostico?: string;
-  tipoIntervencion?: string;
+  tipoIntervencion: string;
   fecha: string;
-  antirrabicaAnual?: boolean;
-  sextupleAnual?: boolean;
-  tripleAnual?: boolean;
+  tipoVacuna?: string;
+  fechaVencimiento?: string;
 }
+
+export const TIPOS_VACUNA = ['Antirrábica', 'Sextuple', 'Triple felina', 'Otra'] as const;
